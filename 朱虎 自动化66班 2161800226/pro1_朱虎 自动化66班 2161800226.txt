@@ -1,0 +1,58 @@
+#include <opencv2/opencv.hpp>
+#include <iostream>
+using namespace cv;
+
+void huidu(cv::Mat& mInput_img, int mLevel);
+void main()
+
+{
+
+	Mat srcImage = imread("lena.bmp");//载入图像
+
+	imshow("【输入的测试图像】", srcImage);//显示图像
+	huidu(srcImage, 512);
+	waitKey(0);//等任意键按下
+
+}
+
+uchar get_value(int level, uchar v)
+{
+	int nBlock_num = level - 1;//所有的区间数目
+	int nBlock_size = 256 / nBlock_num;//区间大小
+	for (int i = 1; i <= nBlock_num; i++){
+		if (v > nBlock_size*i){
+			continue;
+		}
+		int nMid_value = nBlock_size*i / 2;
+		int nLeft = nBlock_size*(i - 1);
+		int nRight = nBlock_size*i - 1;
+		if (v < nMid_value)
+		{
+			return nLeft;
+		}
+		else
+		{
+			return nRight;
+		}
+	}
+	return v;//v
+}
+
+void huidu(cv::Mat& mInput_img, int mLevel)
+{
+	cv::Mat mOutput_img = mInput_img.clone();
+	mOutput_img.setTo(0);
+
+	for (int i = 0; i < mOutput_img.rows; i++)
+	{
+		uchar* p1 = mInput_img.ptr<uchar>(i);
+		uchar* p2 = mOutput_img.ptr<uchar>(i);
+		for (int j = 0; j < mOutput_img.cols; j++)
+		{
+			p2[j] = get_value(mLevel, p1[j]);
+		}
+	}
+	cv::imshow("ss", mOutput_img);
+	cv::imwrite("ss.bmp", mOutput_img);
+	cv::waitKey();
+}

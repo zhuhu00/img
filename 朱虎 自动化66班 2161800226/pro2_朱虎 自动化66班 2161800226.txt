@@ -1,0 +1,42 @@
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include<opencv2\opencv.hpp>
+#include <iostream>
+#include <opencv2/highgui/highgui.hpp>
+#include <string.h>
+
+using namespace cv;
+using namespace std;
+//			描述全局函数声明
+
+
+
+//			描述全局变量声明
+// #define LEVEL 2	//灰度等级
+
+
+//			main函数
+Mat srcimg;
+Mat srcimg1;//输出
+void cal_mean_stddev(string filepath){
+	Mat src = imread(filepath);
+	Mat mat_mean, mat_stddev;
+	meanStdDev(src, mat_mean, mat_stddev);
+	double m, s;
+	m = mat_mean.at<double>(0, 0);
+	s = mat_stddev.at<double>(0, 0);
+	cout << filepath << "的均值是：" << m << endl;
+	cout << filepath << "的标准差：" << s << endl;
+}
+
+int main()
+{
+	string filepath = "lena.bmp";
+	
+	srcimg = imread(filepath);//载入原始图片
+	//imshow("src", srcimg);//显示图片
+	cal_mean_stddev(filepath);
+	waitKey(0);//等待任意按键按下
+	return 0;
+}
+

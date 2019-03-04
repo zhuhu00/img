@@ -1,0 +1,20 @@
+i=imread('lena.bmp');
+% i=rgb2gray(i);
+b=imresize(i,4,'nearest');
+c=imresize(i,4,'bilinear');
+d=imresize(i,4,'bicubic');
+[m,n,color] = size(i)
+[mm,nn,color1]=size(b)
+
+subplot(2,2,1);
+imshow(i)
+title("lena原图像");
+subplot(2,2,2);
+imshow(b)
+title("lena最近邻");
+subplot(2,2,3);
+imshow(c)
+title("lena双线性");
+subplot(2,2,4);
+imshow(d)
+title("lena双三次");
